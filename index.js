@@ -42,18 +42,9 @@ const getFormattedDateTime = () => {
 
 // Function to export colors as a text file with the modified filename
 const exportColors = () => {
-  const colorData = {
-    Colors: pickedColors.map((color) => {
-      return {
-        hex: color,
-        rgb: hexToRgb(color),
-      };
-    }),
-  };
-  const fileName = `colors_${getFormattedDateTime()}.json`;
-  const blob = new Blob([JSON.stringify(colorData)], {
-    type: "application/json",
-  });
+  const colorText = pickedColors.join("\n");
+  const fileName = `colors_${getFormattedDateTime()}.txt`;
+  const blob = new Blob([colorText], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

@@ -48,7 +48,7 @@ body {
   font-size: 1rem;
   cursor: pointer;
   padding: 6px 12px;
-  background: #003ee5;
+  background: #000000;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -61,11 +61,11 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  color: #003ee5;
+  color: #000000;
   font-size: 1rem;
   cursor: pointer;
   padding: 6px 12px;
-  border: #003ee5 1px solid;
+  border: #000000 1px solid;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -90,7 +90,7 @@ header #clear-btn {
   font-weight: 1000;
   cursor: pointer;
   font-size: 0.9rem;
-  color: #003ee5;
+  color: #000000;
 }
 
 .colors-list.hide {
