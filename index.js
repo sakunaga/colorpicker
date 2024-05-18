@@ -14,10 +14,9 @@ const copyToClipboard = async (text, element) => {
   try {
     await navigator.clipboard.writeText(text);
     element.innerHTML = `
-			<svg width="14px" height="14px" stroke-width="2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
-				<path d="M7 12.5l3 3 7-7" stroke="#38b057" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" class="circle-animation"></path>
-				<path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="#38b057" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"></path>
-			</svg> Copied!
+			<span class="copied">
+			  コピーしました
+			</span>
 		`;
     // Resetting element text after 1 second
     setTimeout(() => {
@@ -68,7 +67,7 @@ const createColorPopup = (color) => {
 	          <div class="color-preview" style="background: ${color.hex}; border: 0.1px solid #cccccc"></div>
 	          <div class="color-details">
 	            <div class="color-value">
-	              <span class="label">Hex</span>
+	              <span class="label">HEX</span>
 	              <span class="value hex" data-color="${color.hex}">${color.hex}</span>
 	            </div>
 	            <div class="color-value">

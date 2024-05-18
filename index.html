@@ -10,12 +10,16 @@
   <body>
     <div class="container">
       <div class="picker">
-        <button id="picker-btn">Pick Color</button>
-        <button id="export-btn">Export Colors</button>
+        <button id="picker-btn">
+          <svg id="droper" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" color="#000000"><defs><style>.cls-63763c42c3a86d32eae6f12e-1{fill:none;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-63763c42c3a86d32eae6f12e-1" d="M22.5,6.41h0a4.91,4.91,0,0,1-2.31,4.17l-5.33,3.33L10.09,9.14l3.33-5.33A4.91,4.91,0,0,1,17.59,1.5h0A4.91,4.91,0,0,1,22.5,6.41Z"></path><polyline class="cls-63763c42c3a86d32eae6f12e-1" points="13.91 12.96 4.36 22.5 1.5 22.5 1.5 19.64 11.04 10.09"></polyline><line class="cls-63763c42c3a86d32eae6f12e-1" x1="8.18" y1="7.23" x2="16.77" y2="15.82"></line></svg>
+        </button>
+        <button id="export-btn">
+          <svg id="export" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" color="#000000"><defs><style>.cls-63ce7424ea57ea6c83800559-1{fill:none;stroke:currentColor;stroke-miterlimit:10;}</style></defs><polyline class="cls-63ce7424ea57ea6c83800559-1" points="13.89 15.82 13.89 22.5 1.48 22.5 1.48 1.5 13.89 1.5 13.89 8.18"></polyline><line class="cls-63ce7424ea57ea6c83800559-1" x1="8.16" y1="12" x2="21.52" y2="12"></line><polyline class="cls-63ce7424ea57ea6c83800559-1" points="16.75 16.77 21.52 12 16.75 7.23"></polyline></svg>
+        </button>
       </div>
       <div class="colors-list hide">
         <header>
-          <h1 class="title">Picked Colors</h1>
+          <h1 class="title">Colors</h1>
           <span id="clear-btn">Clear All</span>
         </header>
         <ul class="all-colors" aria-busy="true"></ul>
