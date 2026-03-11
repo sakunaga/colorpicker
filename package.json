@@ -4,8 +4,9 @@
   "description": "<div align=\"center\">     <img src=\"./icons/icon-512x512.png\" alt=\"\" width=\"100\" />     <h3>colorpicker</h3>     <p>Google Chrome Extension</p> </div>",
   "main": "index.js",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./tailwind.css",
-    "watch": "tailwindcss -i ./src/input.css -o ./tailwind.css --watch"
+    "build": "tailwindcss -i ./src/css/input.css -o ./src/css/tailwind.css && npm run dist",
+    "watch": "tailwindcss -i ./src/css/input.css -o ./src/css/tailwind.css --watch",
+    "dist": "rm -rf dist && mkdir -p dist/styles dist/scripts && cp src/manifest.json src/index.html dist/ && cp src/css/style.css src/css/tailwind.css dist/styles/ && cp src/scripts/index.js dist/scripts/ && cp -r src/icons dist/ && sed -i '' 's|href=\"css/tailwind.css\"|href=\"styles/tailwind.css\"|g; s|href=\"css/style.css\"|href=\"styles/style.css\"|g; s|src=\"scripts/index.js\"|src=\"scripts/index.js\"|g' dist/index.html"
   },
   "repository": {
     "type": "git",
