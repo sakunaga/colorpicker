@@ -17,13 +17,13 @@ const CHECK_ICON = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
   <path d="M20 6L9 17L4 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
-const SPRING = "ease";
+const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 
 const showToast = () => {
   if (toastTimer) clearTimeout(toastTimer);
   toastWrapper.style.animation = "none";
   void toastWrapper.offsetHeight;
-  toastWrapper.style.animation = `toastBounceIn 0.25s ${SPRING} forwards`;
+  toastWrapper.style.animation = `toastBounceIn 0.5s ${SPRING} forwards`;
   toastTimer = setTimeout(() => {
     toastWrapper.style.animation = "toastFadeOut 0.25s ease forwards";
   }, 1800);
@@ -75,7 +75,7 @@ const animateIcon = (iconEl, svg) => {
   iconEl.style.animation = "none";
   void iconEl.offsetHeight;
   iconEl.innerHTML = svg;
-  iconEl.style.animation = `iconBounceIn 0.2s ${SPRING} forwards`;
+  iconEl.style.animation = `iconBounceIn 0.45s ${SPRING} forwards`;
 };
 
 const showColors = () => {
@@ -95,7 +95,7 @@ const showColors = () => {
         <div class="copy-overlay absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
           <span class="overlay-icon" style="display:flex;align-items:center;justify-content:center;">${COPY_ICON}</span>
         </div>
-        <button class="delete-btn absolute top-1 right-1 w-5 h-5 rounded-full bg-black/40 hover:bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-150"
+        <button class="delete-btn absolute top-1 right-1 w-5 h-5 rounded-full bg-black/40 hover:bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-150 cursor-pointer"
                 data-color="${color}"
                 title="削除">
           <svg width="8" height="8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
