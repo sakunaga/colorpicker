@@ -13,6 +13,23 @@
   font-family: "JetBrains Mono", monospace;
 }
 
+/* アイコン切り替えアニメーション */
+@keyframes iconBounceIn {
+  0%   { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* トースト: 下からすっと */
+@keyframes toastBounceIn {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastFadeOut {
+  0%   { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(6px); }
+}
+
 /* トースト */
 #toast-wrapper {
   position: fixed;
@@ -23,15 +40,5 @@
   justify-content: center;
   pointer-events: none;
   z-index: 9999;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.toast-wrapper-hidden {
   opacity: 0;
-  transform: translateY(6px);
-}
-
-.toast-wrapper-visible {
-  opacity: 1;
-  transform: translateY(0);
 }
