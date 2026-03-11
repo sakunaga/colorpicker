@@ -1,0 +1,26 @@
+{
+  "name": "colorpicker",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">     <img src=\"./icons/icon-512x512.png\" alt=\"\" width=\"100\" />     <h3>colorpicker</h3>     <p>Google Chrome Extension</p> </div>",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./tailwind.css",
+    "watch": "tailwindcss -i ./src/input.css -o ./tailwind.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sakunaga/colorpicker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sakunaga/colorpicker/issues"
+  },
+  "homepage": "https://github.com/sakunaga/colorpicker#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}
