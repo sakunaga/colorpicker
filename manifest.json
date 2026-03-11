@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Color Picker",
+  "name": "KPicker",
   "version": "1.0",
   "action": {
     "default_popup": "index.html"
   },
   "icons": {
-    "512": "icons/icon-512x512.png"
+    "512": "icons/icon-128.png"
   },
   "permissions": ["storage"]
 }
