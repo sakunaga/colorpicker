@@ -1,26 +1,25 @@
 {
   "name": "colorpicker",
-  "version": "1.0.0",
-  "description": "<div align=\"center\">     <img src=\"./icons/icon-512x512.png\" alt=\"\" width=\"100\" />     <h3>colorpicker</h3>     <p>Google Chrome Extension</p> </div>",
+  "version": "2.0.0",
   "main": "index.js",
   "scripts": {
     "build": "tailwindcss -i ./src/css/input.css -o ./src/css/tailwind.css && npm run dist",
     "watch": "tailwindcss -i ./src/css/input.css -o ./src/css/tailwind.css --watch",
-    "dist": "rm -rf dist && mkdir -p dist/styles dist/scripts && cp src/manifest.json src/index.html dist/ && cp src/css/style.css src/css/tailwind.css dist/styles/ && cp src/scripts/index.js src/scripts/background.js dist/scripts/ && cp -r src/icons dist/ && sed -i '' 's|href=\"css/tailwind.css\"|href=\"styles/tailwind.css\"|g; s|href=\"css/style.css\"|href=\"styles/style.css\"|g; s|src=\"scripts/index.js\"|src=\"scripts/index.js\"|g' dist/index.html",
-    "package": "mv dist kpicker && zip -r kpicker.zip kpicker && mv kpicker dist"
+    "dist": "node scripts/dist.js",
+    "package": "node scripts/package.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sakunaga/colorpicker.git"
+    "url": "git+https://github.com/kract/colorpicker.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/sakunaga/colorpicker/issues"
+    "url": "https://github.com/kract/colorpicker/issues"
   },
-  "homepage": "https://github.com/sakunaga/colorpicker#readme",
+  "homepage": "https://github.com/kract/colorpicker#readme",
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",
     "tailwindcss": "^4.2.1"
