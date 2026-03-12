@@ -45,16 +45,13 @@ const getFormattedDateTime = () => {
 };
 
 const exportColors = () => {
+  if (pickedColors.length === 0) return;
   const colorText = pickedColors.join("\n");
-  const blob = new Blob([colorText], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `colors_${getFormattedDateTime()}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  const filename = `colors_${getFormattedDateTime()}.txt`;
+  chrome.runtime.sendMessage(
+    { type: "export", text: colorText, filename },
+    () => {}
+  );
 };
 
 const hexToRgb = (hex) => {
@@ -84,6 +81,7 @@ const showColors = () => {
 
   colorsListEl.classList.toggle("hidden", !hasColors);
   emptyState.classList.toggle("hidden", hasColors);
+  exportBtn.disabled = !hasColors;
 
   colorList.innerHTML = pickedColors
     .map(

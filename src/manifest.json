@@ -5,8 +5,11 @@
   "action": {
     "default_popup": "index.html"
   },
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
   "icons": {
     "128": "icons/icon-128.png"
   },
-  "permissions": ["storage"]
+  "permissions": ["storage", "downloads"]
 }

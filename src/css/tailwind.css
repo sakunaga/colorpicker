@@ -34,6 +34,7 @@
     --leading-tight: 1.25;
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
+    --radius-2xl: 1rem;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
@@ -255,8 +256,8 @@
   .w-12 {
     width: calc(var(--spacing) * 12);
   }
-  .w-\[360px\] {
-    width: 360px;
+  .w-\[440px\] {
+    width: 440px;
   }
   .w-full {
     width: 100%;
@@ -292,6 +293,9 @@
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .rounded-2xl {
+    border-radius: var(--radius-2xl);
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
@@ -532,6 +536,34 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-red-500);
+      }
+    }
+  }
+  .disabled\:cursor-not-allowed {
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  .disabled\:opacity-40 {
+    &:disabled {
+      opacity: 40%;
+    }
+  }
+  .disabled\:hover\:border-gray-200 {
+    &:disabled {
+      &:hover {
+        @media (hover: hover) {
+          border-color: var(--color-gray-200);
+        }
+      }
+    }
+  }
+  .disabled\:hover\:bg-transparent {
+    &:disabled {
+      &:hover {
+        @media (hover: hover) {
+          background-color: transparent;
+        }
       }
     }
   }

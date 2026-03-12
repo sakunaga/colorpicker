@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap");
 
+html,
+body {
+  overflow: hidden;
+  border-radius: 16px;
+}
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -32,6 +38,12 @@
 @keyframes toastFadeOut {
   0%   { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 0; transform: translateY(10px) scale(0.9); }
+}
+
+/* 書き出しボタン無効時 */
+#export-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* トースト */
