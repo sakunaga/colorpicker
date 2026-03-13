@@ -7,6 +7,7 @@ const toastWrapper = document.querySelector("#toast-wrapper");
 
 const DATA_KEY = "kpicker-data";
 const COPY_FORMAT_KEY = "kpicker-copy-format";
+const CURRENT_FOLDER_KEY = "kpicker-current-folder";
 const DEFAULT_FOLDER_ID = "default";
 
 const generateId = () => crypto.randomUUID().slice(0, 8);
@@ -124,7 +125,12 @@ const saveData = (data) => {
 };
 
 let appData = loadData();
-let currentFolderId = appData.folders[0]?.id ?? DEFAULT_FOLDER_ID;
+const loadCurrentFolderId = () => {
+  const saved = localStorage.getItem(CURRENT_FOLDER_KEY);
+  const exists = appData.folders.some((f) => f.id === saved);
+  return exists ? saved : (appData.folders[0]?.id ?? DEFAULT_FOLDER_ID);
+};
+let currentFolderId = loadCurrentFolderId();
 let selectedColorFamily = "すべて";
 let toastTimer = null;
 
@@ -511,7 +517,10 @@ const deleteFolder = (folderId) => {
     (fc) => fc.folderId !== folderId,
   );
   appData.folders = appData.folders.filter((f) => f.id !== folderId);
-  if (currentFolderId === folderId) currentFolderId = DEFAULT_FOLDER_ID;
+  if (currentFolderId === folderId) {
+    currentFolderId = DEFAULT_FOLDER_ID;
+    localStorage.setItem(CURRENT_FOLDER_KEY, currentFolderId);
+  }
   saveData(appData);
   render();
 };
@@ -1022,6 +1031,7 @@ const bindFolderTabEvents = () => {
       )
         return;
       currentFolderId = tab.dataset.folderId;
+      localStorage.setItem(CURRENT_FOLDER_KEY, currentFolderId);
       render();
     });
   });
