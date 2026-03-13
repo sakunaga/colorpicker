@@ -1,6 +1,6 @@
 {
   "name": "colorpicker",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "main": "index.js",
   "scripts": {
     "build": "tailwindcss -i ./src/css/input.css -o ./src/css/tailwind.css && npm run dist",
@@ -22,6 +22,7 @@
   "homepage": "https://github.com/kract/colorpicker#readme",
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",
-    "tailwindcss": "^4.2.1"
+    "tailwindcss": "^4.2.1",
+    "terser": "^5.46.0"
   }
 }

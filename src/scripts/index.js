@@ -546,14 +546,14 @@ const clearAllColors = () => {
       ? `${folderName}の${toRemove.length}色を削除しますか？`
       : `${folderName}のロックされていない${toRemove.length}色を削除しますか？`;
   showConfirmModal(msg, () => {
-    const fc = appData.folderColors || [];
-    toRemove.forEach((c) => {
-      const idx = fc.findIndex(
-        (f) => f.folderId === currentFolderId && f.colorId === c.id,
-      );
-      if (idx >= 0) fc.splice(idx, 1);
-    });
-    appData.folderColors = fc;
+    const toRemoveIds = new Set(toRemove.map((c) => c.id));
+    const isAll = currentFolderId === DEFAULT_FOLDER_ID;
+    if (isAll) {
+      appData.colors = appData.colors.filter((c) => !toRemoveIds.has(c.id));
+    }
+    appData.folderColors = (appData.folderColors || []).filter(
+      (fc) => !(fc.folderId === currentFolderId && toRemoveIds.has(fc.colorId)),
+    );
     saveData(appData);
     render();
   });
