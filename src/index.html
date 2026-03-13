@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -9,31 +9,102 @@
     <title>KPicker</title>
   </head>
   <body class="w-[440px] bg-white select-none rounded-2xl overflow-hidden">
-
     <div class="px-5 pt-5 pb-6">
-
       <!-- ヘッダー -->
       <div class="flex items-center justify-between mb-5">
         <div class="flex items-center gap-2">
-          <div class="w-5 h-5 rounded-full bg-gradient-to-br from-pink-400 to-violet-500"></div>
-          <span class="text-sm font-bold tracking-wide text-gray-800">KPicker</span>
+          <div class="w-5 h-5 rounded-full bg-[#ff5c00]"></div>
+          <span class="text-sm font-bold tracking-wide text-gray-800"
+            >KPicker</span
+          >
         </div>
         <div class="flex items-center gap-2">
-          <button id="export-btn" title="カラーをテキストで書き出す"
-            class="flex items-center gap-1.5 px-3 h-8 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-600 text-xs font-medium transition-all duration-150 hover:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-gray-200">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <select
+            id="copy-format-select"
+            title="コピー形式"
+            class="h-8 px-2 rounded-lg border border-gray-200 text-gray-600 text-xs font-medium bg-white hover:border-gray-300 cursor-pointer"
+          >
+            <option value="hex">HEX</option>
+            <option value="rgb">RGB</option>
+            <option value="hsl">HSL</option>
+            <option value="oklch">OKLCH</option>
+          </select>
+          <button
+            id="export-btn"
+            title="カラーをテキストで書き出す"
+            class="flex items-center gap-1.5 px-3 h-8 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-600 text-xs font-medium transition-all duration-150 hover:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:border-gray-200"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <polyline
+                points="7 10 12 15 17 10"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+              <line
+                x1="12"
+                y1="15"
+                x2="12"
+                y2="3"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
             </svg>
             書き出す
           </button>
-          <button id="picker-btn" title="カラーを取得"
-            class="flex items-center gap-1.5 px-3 h-8 rounded-lg bg-gray-900 hover:bg-gray-700 text-white text-xs font-medium transition-all duration-150 hover:cursor-pointer">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22.5,6.41h0a4.91,4.91,0,0,1-2.31,4.17l-5.33,3.33L10.09,9.14l3.33-5.33A4.91,4.91,0,0,1,17.59,1.5h0A4.91,4.91,0,0,1,22.5,6.41Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <polyline points="13.91 12.96 4.36 22.5 1.5 22.5 1.5 19.64 11.04 10.09" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <line x1="8.18" y1="7.23" x2="16.77" y2="15.82" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <button
+            id="picker-btn"
+            title="カラーを取得"
+            class="flex items-center gap-1.5 px-3 h-8 rounded-lg bg-gray-900 hover:bg-gray-700 text-white text-xs font-medium transition-all duration-150 hover:cursor-pointer"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M22.5,6.41h0a4.91,4.91,0,0,1-2.31,4.17l-5.33,3.33L10.09,9.14l3.33-5.33A4.91,4.91,0,0,1,17.59,1.5h0A4.91,4.91,0,0,1,22.5,6.41Z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+              <polyline
+                points="13.91 12.96 4.36 22.5 1.5 22.5 1.5 19.64 11.04 10.09"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                fill="none"
+              />
+              <line
+                x1="8.18"
+                y1="7.23"
+                x2="16.77"
+                y2="15.82"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
             </svg>
             取得
           </button>
@@ -42,36 +113,128 @@
 
       <!-- カラーリスト -->
       <div class="colors-list hidden">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Colors</span>
-          <button id="clear-btn"
-            class="text-[11px] text-red-400 hover:text-red-500 font-medium transition-colors duration-150 hover:cursor-pointer">
-            すべて削除
-          </button>
+        <div id="folder-tabs" class="folder-tabs scroll-fade-x flex items-center gap-1 mb-2 overflow-x-auto pb-1"></div>
+        <div class="flex items-center gap-2 mb-2">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="検索（HEX・名前）"
+            class="flex-1 h-7 px-2 rounded-lg border border-gray-200 text-xs text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#ff5c00] focus:border-[#ff5c00]"
+          />
+          <div class="relative" id="color-family-wrapper">
+            <button
+              type="button"
+              id="color-family-trigger"
+              title="色系統でフィルター"
+              class="h-7 min-w-[80px] px-2 rounded-lg border border-gray-200 text-xs text-gray-600 bg-white hover:border-gray-300 cursor-pointer text-left flex items-center justify-between gap-1"
+            >
+              <span id="color-family-label">色系統</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="color-family-dropdown" class="scroll-fade-y hidden absolute top-full right-0 mt-1 z-50 min-w-[140px] py-1 rounded-lg border border-gray-200 bg-white shadow-lg max-h-[200px] overflow-y-auto">
+              <!-- 存在する色系統のみ render で動的に挿入 -->
+            </div>
+          </div>
         </div>
-        <ul class="all-colors grid grid-cols-4 gap-2"></ul>
+        <div id="colors-grid-section" class="colors-grid-section">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[10px] font-semibold text-gray-400 uppercase">Colors</span>
+            <button
+              id="clear-btn"
+              class="text-[11px] text-red-400 hover:text-red-500 font-medium transition-colors duration-150 hover:cursor-pointer"
+            >
+              すべて削除
+            </button>
+          </div>
+          <div id="colors-scroll-wrap" class="scroll-fade-y overflow-y-auto max-h-[250px]">
+            <ul class="all-colors grid grid-cols-4 gap-2"></ul>
+          </div>
+        </div>
       </div>
 
       <!-- 空の状態 -->
-      <div id="empty-state" class="flex flex-col items-center justify-center py-10 text-center rounded-xl border border-dashed border-gray-200">
-        <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-3">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-gray-300">
-            <path d="M22.5,6.41h0a4.91,4.91,0,0,1-2.31,4.17l-5.33,3.33L10.09,9.14l3.33-5.33A4.91,4.91,0,0,1,17.59,1.5h0A4.91,4.91,0,0,1,22.5,6.41Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <polyline points="13.91 12.96 4.36 22.5 1.5 22.5 1.5 19.64 11.04 10.09" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <line x1="8.18" y1="7.23" x2="16.77" y2="15.82" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <div
+        id="empty-state"
+        class="flex flex-col items-center justify-center py-10 text-center rounded-xl border border-dashed border-gray-200"
+      >
+        <div
+          class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-3"
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="text-gray-300"
+          >
+            <path
+              d="M22.5,6.41h0a4.91,4.91,0,0,1-2.31,4.17l-5.33,3.33L10.09,9.14l3.33-5.33A4.91,4.91,0,0,1,17.59,1.5h0A4.91,4.91,0,0,1,22.5,6.41Z"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            />
+            <polyline
+              points="13.91 12.96 4.36 22.5 1.5 22.5 1.5 19.64 11.04 10.09"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            />
+            <line
+              x1="8.18"
+              y1="7.23"
+              x2="16.77"
+              y2="15.82"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
           </svg>
         </div>
         <p class="text-xs text-gray-400 font-medium">カラーがありません</p>
-        <p class="text-[11px] text-gray-300 mt-1">「取得」ボタンで画面からカラーを拾えます</p>
+        <p class="text-[11px] text-gray-300 mt-1">
+          「取得」ボタンで画面からカラーを拾えます
+        </p>
       </div>
+    </div>
 
+    <!-- 入力モーダル（名前編集・フォルダ作成で共通） -->
+    <div id="input-modal" class="input-modal-hidden">
+      <div class="input-modal-overlay"></div>
+      <div class="input-modal-content">
+        <p id="input-modal-title" class="input-modal-title">入力</p>
+        <input id="input-modal-input" type="text" class="input-modal-input" placeholder="入力..." maxlength="32">
+        <div class="input-modal-actions">
+          <button id="input-modal-cancel" class="input-modal-btn cancel">キャンセル</button>
+          <button id="input-modal-ok" class="input-modal-btn ok">OK</button>
+        </div>
+      </div>
     </div>
 
     <!-- トースト通知（拡張機能ポップアップ下中央に固定） -->
     <div id="toast-wrapper" class="toast-wrapper-hidden">
-      <div id="toast" class="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-xs font-medium rounded-full shadow-lg">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <div
+        id="toast"
+        class="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-xs font-medium rounded-full shadow-lg"
+      >
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M20 6L9 17L4 12"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
         コピーしました
       </div>
