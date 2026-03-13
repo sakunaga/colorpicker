@@ -504,9 +504,6 @@
   .pr-9 {
     padding-right: calc(var(--spacing) * 9);
   }
-  .pb-1 {
-    padding-bottom: calc(var(--spacing) * 1);
-  }
   .pb-6 {
     padding-bottom: calc(var(--spacing) * 6);
   }

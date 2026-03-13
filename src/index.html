@@ -20,16 +20,23 @@
           >
         </div>
         <div class="flex items-center gap-2">
-          <select
-            id="copy-format-select"
-            title="コピー形式"
-            class="h-8 px-2 rounded-lg border border-gray-200 text-gray-600 text-xs font-medium bg-white hover:border-gray-300 cursor-pointer"
-          >
-            <option value="hex">HEX</option>
-            <option value="rgb">RGB</option>
-            <option value="hsl">HSL</option>
-            <option value="oklch">OKLCH</option>
-          </select>
+          <div class="relative shrink-0" id="copy-format-wrapper">
+            <button
+              type="button"
+              id="copy-format-trigger"
+              title="コピー形式"
+              class="h-8 min-w-[80px] px-2 rounded-lg border border-gray-200 text-xs text-gray-600 bg-white hover:border-gray-300 cursor-pointer text-left flex items-center justify-between gap-1"
+            >
+              <span id="copy-format-label">HEX</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="copy-format-dropdown" class="hidden absolute top-full left-0 mt-1 z-50 min-w-[100px] py-1 rounded-lg border border-gray-200 bg-white shadow-lg">
+              <div class="copy-format-option px-3 py-1.5 hover:bg-gray-50 cursor-pointer text-xs text-gray-700" data-format="hex">HEX</div>
+              <div class="copy-format-option px-3 py-1.5 hover:bg-gray-50 cursor-pointer text-xs text-gray-700" data-format="rgb">RGB</div>
+              <div class="copy-format-option px-3 py-1.5 hover:bg-gray-50 cursor-pointer text-xs text-gray-700" data-format="hsl">HSL</div>
+              <div class="copy-format-option px-3 py-1.5 hover:bg-gray-50 cursor-pointer text-xs text-gray-700" data-format="oklch">OKLCH</div>
+            </div>
+          </div>
           <button
             id="export-btn"
             title="カラーをテキストで書き出す"
@@ -114,7 +121,10 @@
 
       <!-- カラーリスト -->
       <div class="colors-list hidden">
-        <div id="folder-tabs" class="folder-tabs flex items-center gap-1 mb-2 overflow-x-auto pb-1"></div>
+        <div class="folder-tabs-wrapper flex items-center gap-1 mb-2 overflow-hidden">
+          <div id="folder-tabs" class="folder-tabs flex items-center gap-1 overflow-x-auto flex-1 min-w-0"></div>
+          <button id="add-folder-btn" class="folder-tab add-btn shrink-0" title="フォルダを追加">+</button>
+        </div>
         <div class="mb-2 flex items-center gap-2">
           <input
             id="search-input"

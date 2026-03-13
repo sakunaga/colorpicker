@@ -37,7 +37,6 @@ const migrateFromLegacy = () => {
           name: "すべて",
           order: 0,
           isDefault: true,
-          locked: false,
         },
       ],
       colors,
@@ -92,7 +91,6 @@ const loadData = () => {
           name: "すべて",
           order: 0,
           isDefault: true,
-          locked: false,
         },
       ],
       colors: [],
@@ -111,7 +109,6 @@ const loadData = () => {
           name: "すべて",
           order: 0,
           isDefault: true,
-          locked: false,
         },
       ],
       colors: [],
@@ -475,14 +472,6 @@ const toggleColorLock = (colorId) => {
   render();
 };
 
-const toggleFolderLock = (folderId) => {
-  const folder = appData.folders.find((f) => f.id === folderId);
-  if (!folder || folder.isDefault) return;
-  folder.locked = !folder.locked;
-  saveData(appData);
-  render();
-};
-
 const addFolder = (name) => {
   const id = generateId();
   const maxOrder = Math.max(0, ...appData.folders.map((f) => f.order));
@@ -491,7 +480,6 @@ const addFolder = (name) => {
     name: name || "新規フォルダ",
     order: maxOrder + 1,
     isDefault: false,
-    locked: false,
   });
   saveData(appData);
   render();
@@ -509,7 +497,6 @@ const addFolderFromColor = (colorId) => {
     name: folderName,
     order: maxOrder + 1,
     isDefault: false,
-    locked: false,
   });
   addColorToFolder(colorId, id);
   currentFolderId = id;
@@ -519,7 +506,7 @@ const addFolderFromColor = (colorId) => {
 
 const deleteFolder = (folderId) => {
   const folder = appData.folders.find((f) => f.id === folderId);
-  if (!folder || folder.isDefault || folder.locked) return;
+  if (!folder || folder.isDefault) return;
   appData.folderColors = (appData.folderColors || []).filter(
     (fc) => fc.folderId !== folderId,
   );
@@ -634,8 +621,11 @@ const filterByFamilies = (colors, selectedId) => {
 };
 
 const render = () => {
-  const formatSelect = document.querySelector("#copy-format-select");
-  if (formatSelect) formatSelect.value = getCopyFormat();
+  const formatLabel = document.querySelector("#copy-format-label");
+  if (formatLabel) formatLabel.textContent = getCopyFormat().toUpperCase();
+  document.querySelectorAll(".copy-format-option").forEach((el) => {
+    el.classList.toggle("bg-orange-50", el.dataset.format === getCopyFormat());
+  });
 
   const folderColors = getColorsInFolder(currentFolderId);
   const existingFamilies = getExistingColorFamilies(folderColors);
@@ -695,22 +685,12 @@ const render = () => {
              data-folder-id="${f.id}"
              data-folder-name="${f.name.replace(/"/g, "&quot;")}"
              draggable="${!f.isDefault}">
-          ${
-            !f.isDefault
-              ? `
-            <button class="folder-lock-btn ${f.locked ? "locked" : ""}" data-folder-id="${f.id}" title="${f.locked ? "ロック解除" : "ロック"}">
-              ${f.locked ? LOCK_ICON : UNLOCK_ICON}
-            </button>
-          `
-              : ""
-          }
           <span class="folder-tab-name">${f.name}</span>
-          ${!f.isDefault && !f.locked ? `<button class="folder-delete-btn" data-folder-id="${f.id}" title="フォルダを削除">×</button>` : ""}
+          ${!f.isDefault ? `<button class="folder-delete-btn" data-folder-id="${f.id}" title="フォルダを削除">×</button>` : ""}
         </div>
       `,
         )
         .join("")}
-      <button id="add-folder-btn" class="folder-tab add-btn" title="フォルダを追加">+</button>
     `;
   }
 
@@ -1169,21 +1149,10 @@ const showFolderContextMenu = (e, folderId) => {
 const bindFolderTabEvents = () => {
   document.querySelectorAll(".folder-tab:not(.add-btn)").forEach((tab) => {
     tab.addEventListener("click", (e) => {
-      if (
-        e.target.closest(".folder-lock-btn") ||
-        e.target.closest(".folder-delete-btn")
-      )
-        return;
+      if (e.target.closest(".folder-delete-btn")) return;
       currentFolderId = tab.dataset.folderId;
       localStorage.setItem(CURRENT_FOLDER_KEY, currentFolderId);
       render();
-    });
-  });
-
-  document.querySelectorAll(".folder-lock-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleFolderLock(btn.dataset.folderId);
     });
   });
 
@@ -1289,11 +1258,24 @@ const bindFolderTabEvents = () => {
 };
 
 const initStaticListeners = () => {
-  document
-    .querySelector("#copy-format-select")
-    ?.addEventListener("change", (e) => {
-      localStorage.setItem(COPY_FORMAT_KEY, e.target.value);
+  const copyFormatTrigger = document.querySelector("#copy-format-trigger");
+  const copyFormatDropdown = document.querySelector("#copy-format-dropdown");
+  copyFormatTrigger?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    copyFormatDropdown?.classList.toggle("hidden");
+  });
+  copyFormatDropdown?.addEventListener("click", (e) => e.stopPropagation());
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#copy-format-wrapper")) copyFormatDropdown?.classList.add("hidden");
+  });
+  document.querySelectorAll(".copy-format-option").forEach((el) => {
+    el.addEventListener("click", () => {
+      localStorage.setItem(COPY_FORMAT_KEY, el.dataset.format);
+      copyFormatDropdown?.classList.add("hidden");
+      render();
     });
+  });
+
   document
     .querySelector("#search-input")
     ?.addEventListener("input", () => render());
