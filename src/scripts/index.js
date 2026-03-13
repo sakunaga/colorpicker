@@ -1174,33 +1174,6 @@ const bindFolderTabEvents = () => {
     }
   });
 
-  const addFolderBtn = document.querySelector("#add-folder-btn");
-  addFolderBtn?.addEventListener("click", () => {
-    showInputModal(
-      { title: "フォルダ名を入力", placeholder: "フォルダ名を入力..." },
-      (name) => {
-        if (name) addFolder(name);
-      }
-    );
-  });
-
-  addFolderBtn?.addEventListener("dragover", (e) => {
-    if (e.dataTransfer.types.includes("color-id")) {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = "move";
-      addFolderBtn.classList.add("folder-tab-drop-target");
-    }
-  });
-  addFolderBtn?.addEventListener("dragleave", () => {
-    addFolderBtn.classList.remove("folder-tab-drop-target");
-  });
-  addFolderBtn?.addEventListener("drop", (e) => {
-    e.preventDefault();
-    addFolderBtn.classList.remove("folder-tab-drop-target");
-    const colorId = e.dataTransfer.getData("color-id");
-    if (colorId) addFolderFromColor(colorId);
-  });
-
   let draggedFolderId = null;
   document.querySelectorAll(".folder-tab:not(.add-btn)").forEach((tab) => {
     if (
@@ -1289,6 +1262,32 @@ const initStaticListeners = () => {
   familyDropdown?.addEventListener("click", (e) => e.stopPropagation());
   document.addEventListener("click", (e) => {
     if (!e.target.closest("#color-family-wrapper")) familyDropdown?.classList.add("hidden");
+  });
+
+  const addFolderBtn = document.querySelector("#add-folder-btn");
+  addFolderBtn?.addEventListener("click", () => {
+    showInputModal(
+      { title: "フォルダ名を入力", placeholder: "フォルダ名を入力..." },
+      (name) => {
+        if (name) addFolder(name);
+      }
+    );
+  });
+  addFolderBtn?.addEventListener("dragover", (e) => {
+    if (e.dataTransfer.types.includes("color-id")) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      addFolderBtn.classList.add("folder-tab-drop-target");
+    }
+  });
+  addFolderBtn?.addEventListener("dragleave", () => {
+    addFolderBtn.classList.remove("folder-tab-drop-target");
+  });
+  addFolderBtn?.addEventListener("drop", (e) => {
+    e.preventDefault();
+    addFolderBtn.classList.remove("folder-tab-drop-target");
+    const colorId = e.dataTransfer.getData("color-id");
+    if (colorId) addFolderFromColor(colorId);
   });
 
   document.getElementById("detail-back-btn")?.addEventListener("click", hideColorDetailView);
