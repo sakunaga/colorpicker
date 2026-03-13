@@ -162,10 +162,10 @@ const EDIT_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" x
 </svg>`;
 
 const TRASH_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <polyline points="3 6 5 6 21 6" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
-  <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
-  <line x1="10" y1="11" x2="10" y2="17" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
-  <line x1="14" y1="11" x2="14" y2="17" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  <polyline points="3 6 5 6 21 6" stroke="#6b7280" stroke-width="2" stroke-linecap="round"/>
+  <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="#6b7280" stroke-width="2" stroke-linecap="round"/>
+  <line x1="10" y1="11" x2="10" y2="17" stroke="#6b7280" stroke-width="2" stroke-linecap="round"/>
+  <line x1="14" y1="11" x2="14" y2="17" stroke="#6b7280" stroke-width="2" stroke-linecap="round"/>
 </svg>`;
 
 const LOCK_ICON_LG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -643,11 +643,12 @@ const render = () => {
   if (familyLabel) familyLabel.textContent = selectedColorFamily;
   const lockAllBtn = document.querySelector("#lock-all-btn");
   const lockAllIcon = document.querySelector("#lock-all-icon");
+  const lockAllLabel = document.querySelector("#lock-all-label");
   if (lockAllIcon && lockAllBtn) {
     const allLocked =
       folderColors.length > 0 && folderColors.every((c) => c.locked);
     lockAllIcon.innerHTML = allLocked ? UNLOCK_ICON_LG : LOCK_ICON_LG;
-    lockAllBtn.title = allLocked ? "一括ロック解除" : "一括ロック";
+    if (lockAllLabel) lockAllLabel.textContent = allLocked ? "ロック解除" : "ロックする";
     lockAllBtn.disabled = folderColors.length === 0;
   }
   const clearBtnIcon = document.querySelector("#clear-btn-icon");
