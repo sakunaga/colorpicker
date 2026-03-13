@@ -9,7 +9,8 @@
     <title>KPicker</title>
   </head>
   <body class="w-[440px] bg-white select-none rounded-2xl overflow-hidden">
-    <div class="px-5 pt-5 pb-6">
+    <!-- メイン表示 -->
+    <div id="main-view" class="px-5 pt-5 pb-6">
       <!-- ヘッダー -->
       <div class="flex items-center justify-between mb-5">
         <div class="flex items-center gap-2">
@@ -211,6 +212,61 @@
         <p class="text-[11px] text-gray-300 mt-1">
           「取得」ボタンで画面からカラーを拾えます
         </p>
+      </div>
+    </div>
+
+    <!-- 詳細ページ（拡張機能内） -->
+    <div id="detail-view" class="detail-view hidden overflow-y-auto max-h-[520px]">
+      <div class="detail-header">
+        <button type="button" id="detail-back-btn" class="detail-back-btn" title="戻る">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>戻る</span>
+        </button>
+      </div>
+      <div class="detail-hero">
+        <div id="color-detail-swatch" class="detail-swatch"></div>
+        <p id="color-detail-name" class="detail-name font-mono"></p>
+      </div>
+      <div class="detail-formats">
+        <div class="detail-formats-label">形式</div>
+        <div class="color-detail-formats">
+          <div class="detail-format-row">
+            <span class="detail-format-tag">HEX</span>
+            <div class="color-detail-input-wrap">
+              <input type="text" id="color-detail-hex" readonly disabled class="color-detail-input" />
+              <button type="button" class="color-detail-copy" data-format="hex" title="コピー">
+                <span class="color-detail-copy-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span>
+              </button>
+            </div>
+          </div>
+          <div class="detail-format-row">
+            <span class="detail-format-tag">RGB</span>
+            <div class="color-detail-input-wrap">
+              <input type="text" id="color-detail-rgb" readonly disabled class="color-detail-input" />
+              <button type="button" class="color-detail-copy" data-format="rgb" title="コピー">
+                <span class="color-detail-copy-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span>
+              </button>
+            </div>
+          </div>
+          <div class="detail-format-row">
+            <span class="detail-format-tag">HSL</span>
+            <div class="color-detail-input-wrap">
+              <input type="text" id="color-detail-hsl" readonly disabled class="color-detail-input" />
+              <button type="button" class="color-detail-copy" data-format="hsl" title="コピー">
+                <span class="color-detail-copy-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span>
+              </button>
+            </div>
+          </div>
+          <div class="detail-format-row">
+            <span class="detail-format-tag">OKLCH</span>
+            <div class="color-detail-input-wrap">
+              <input type="text" id="color-detail-oklch" readonly disabled class="color-detail-input" />
+              <button type="button" class="color-detail-copy" data-format="oklch" title="コピー">
+                <span class="color-detail-copy-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

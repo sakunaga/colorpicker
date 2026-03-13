@@ -162,6 +162,11 @@ const UNLOCK_ICON = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none"
   <path d="M7 11V7a5 5 0 0110 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
 </svg>`;
 
+const DETAIL_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+  <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+
 const EDIT_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
   <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -184,6 +189,8 @@ const UNLOCK_ICON_LG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="no
   <path d="M7 11V7a5 5 0 0110 0" stroke="#6b7280" stroke-width="2" stroke-linecap="round" fill="none"/>
 </svg>`;
 
+const CHECK_ICON_GRAY = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#6b7280" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const COPY_ICON_GRAY = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="#6b7280" stroke-width="1.8" fill="none"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="#6b7280" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>`;
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 
 const showToast = () => {
@@ -929,6 +936,67 @@ const showInputModal = (opts, onConfirm) => {
   input.addEventListener("keydown", onKeydown);
 };
 
+const showColorDetailView = (colorId) => {
+  const color = appData.colors.find((c) => c.id === colorId);
+  if (!color) return;
+
+  const mainView = document.getElementById("main-view");
+  const detailView = document.getElementById("detail-view");
+  const swatch = document.getElementById("color-detail-swatch");
+  const nameEl = document.getElementById("color-detail-name");
+  const hexEl = document.getElementById("color-detail-hex");
+  const rgbEl = document.getElementById("color-detail-rgb");
+  const hslEl = document.getElementById("color-detail-hsl");
+  const oklchEl = document.getElementById("color-detail-oklch");
+
+  const hexVal = (color.hex.startsWith("#") ? color.hex : "#" + color.hex).toUpperCase();
+
+  swatch.style.background = color.hex;
+  const hexNorm = ("#" + (color.hex || "").replace(/^#/, "")).toLowerCase();
+  const isLight = ["#ffffff", "#fff", "#fafafa", "#f5f5f5", "#f0f0f0", "#eeeeee"].includes(hexNorm);
+  swatch.style.border = isLight ? "1px solid rgba(0,0,0,0.08)" : "none";
+  nameEl.textContent = color.name || color.hex;
+  hexEl.value = hexVal;
+  rgbEl.value = hexToRgb(color.hex);
+  hslEl.value = hexToHsl(color.hex);
+  oklchEl.value = hexToOklch(color.hex);
+
+  mainView.classList.add("hidden");
+  detailView.classList.remove("hidden");
+
+  const onContentClick = (e) => {
+    const btn = e.target.closest(".color-detail-copy");
+    if (!btn) return;
+    const fmt = btn.dataset.format;
+    const text =
+      fmt === "hex" ? hexVal : fmt === "rgb" ? hexToRgb(color.hex) : fmt === "hsl" ? hexToHsl(color.hex) : hexToOklch(color.hex);
+    copyToClipboard(text);
+    const iconEl = btn.querySelector(".color-detail-copy-icon");
+    if (iconEl) {
+      if (btn._revertTimer) clearTimeout(btn._revertTimer);
+      animateIcon(iconEl, CHECK_ICON_GRAY);
+      btn._revertTimer = setTimeout(() => {
+        animateIcon(iconEl, COPY_ICON_GRAY);
+        btn._revertTimer = null;
+      }, 1600);
+    }
+  };
+
+  detailView._detailClickHandler = onContentClick;
+  detailView.addEventListener("click", onContentClick);
+};
+
+const hideColorDetailView = () => {
+  const mainView = document.getElementById("main-view");
+  const detailView = document.getElementById("detail-view");
+  if (detailView._detailClickHandler) {
+    detailView.removeEventListener("click", detailView._detailClickHandler);
+    detailView._detailClickHandler = null;
+  }
+  detailView.classList.add("hidden");
+  mainView.classList.remove("hidden");
+};
+
 const showColorContextMenu = (e, colorId) => {
   const existing = document.querySelector("#color-context-menu");
   if (existing) existing.remove();
@@ -940,11 +1008,15 @@ const showColorContextMenu = (e, colorId) => {
   menu.id = "color-context-menu";
   menu.className = "context-menu";
   menu.innerHTML = `
+    <button class="context-menu-item" data-action="detail">
+      <span class="context-menu-icon">${DETAIL_ICON}</span>
+      詳細ページ
+    </button>
     <button class="context-menu-item" data-action="rename">
       <span class="context-menu-icon">${EDIT_ICON}</span>
       名前を編集
     </button>
-      <button class="context-menu-item" data-action="lock">
+    <button class="context-menu-item" data-action="lock">
       <span class="context-menu-icon">${isLocked ? UNLOCK_ICON : LOCK_ICON}</span>
       ${isLocked ? "ロック解除" : "ロック"}
     </button>
@@ -961,6 +1033,12 @@ const showColorContextMenu = (e, colorId) => {
   };
 
   setTimeout(() => document.addEventListener("click", close), 0);
+
+  menu.querySelector("[data-action=detail]").addEventListener("click", (ev) => {
+    ev.stopPropagation();
+    close();
+    showColorDetailView(colorId);
+  });
 
   menu.querySelector("[data-action=rename]").addEventListener("click", (ev) => {
     ev.stopPropagation();
@@ -1164,6 +1242,8 @@ const initStaticListeners = () => {
   document.addEventListener("click", (e) => {
     if (!e.target.closest("#color-family-wrapper")) familyDropdown?.classList.add("hidden");
   });
+
+  document.getElementById("detail-back-btn")?.addEventListener("click", hideColorDetailView);
 };
 
 const bindColorFamilyOptions = () => {

@@ -33,11 +33,11 @@ fs.copyFileSync(path.join(src, "scripts/background.js"), path.join(dist, "script
 fs.cpSync(path.join(src, "icons"), path.join(dist, "icons"), { recursive: true })
 
 // Update index.html paths
-let html = fs.readFileSync(path.join(dist, "index.html"), "utf8")
-html = html
+let indexHtml = fs.readFileSync(path.join(dist, "index.html"), "utf8")
+indexHtml = indexHtml
   .replace(/href="css\/tailwind\.css"/g, 'href="styles/tailwind.css"')
   .replace(/href="css\/style\.css"/g, 'href="styles/style.css"')
   .replace(/src="scripts\/index\.js"/g, 'src="scripts/index.js"')
-fs.writeFileSync(path.join(dist, "index.html"), html)
+fs.writeFileSync(path.join(dist, "index.html"), indexHtml)
 
 console.log("dist/ created successfully")
