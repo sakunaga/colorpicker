@@ -936,6 +936,18 @@ const showInputModal = (opts, onConfirm) => {
   input.addEventListener("keydown", onKeydown);
 };
 
+const updateDetailActionButtons = (colorId) => {
+  const color = appData.colors.find((c) => c.id === colorId);
+  const lockIcon = document.getElementById("detail-lock-icon");
+  const lockLabel = document.getElementById("detail-lock-label");
+  const deleteBtn = document.getElementById("detail-delete-btn");
+  if (!color) return;
+  const isLocked = color.locked ?? false;
+  if (lockIcon) lockIcon.innerHTML = isLocked ? UNLOCK_ICON_LG : LOCK_ICON_LG;
+  if (lockLabel) lockLabel.textContent = isLocked ? "ロック解除" : "ロック";
+  if (deleteBtn) deleteBtn.style.display = isLocked ? "none" : "";
+};
+
 const showColorDetailView = (colorId) => {
   const color = appData.colors.find((c) => c.id === colorId);
   if (!color) return;
@@ -943,7 +955,10 @@ const showColorDetailView = (colorId) => {
   const mainView = document.getElementById("main-view");
   const detailView = document.getElementById("detail-view");
   const swatch = document.getElementById("color-detail-swatch");
-  const nameEl = document.getElementById("color-detail-name");
+  const nameDisplay = document.getElementById("color-detail-name-display");
+  const nameInput = document.getElementById("color-detail-name");
+  const nameActionBtn = document.getElementById("detail-name-action-btn");
+  const nameActionIcon = document.getElementById("detail-name-action-icon");
   const hexEl = document.getElementById("color-detail-hex");
   const rgbEl = document.getElementById("color-detail-rgb");
   const hslEl = document.getElementById("color-detail-hsl");
@@ -952,33 +967,84 @@ const showColorDetailView = (colorId) => {
   const hexVal = (color.hex.startsWith("#") ? color.hex : "#" + color.hex).toUpperCase();
 
   swatch.style.background = color.hex;
-  const hexNorm = ("#" + (color.hex || "").replace(/^#/, "")).toLowerCase();
-  const isLight = ["#ffffff", "#fff", "#fafafa", "#f5f5f5", "#f0f0f0", "#eeeeee"].includes(hexNorm);
-  swatch.style.border = isLight ? "1px solid rgba(0,0,0,0.08)" : "none";
-  nameEl.textContent = color.name || color.hex;
+  const EDIT_ICON_14 = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+  const CHECK_ICON_14 = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17L4 12"/></svg>`;
+
+  const showNameDisplay = () => {
+    nameDisplay.textContent = color.name || color.hex || "";
+    nameDisplay.classList.remove("hidden");
+    nameInput.classList.add("hidden");
+    nameActionBtn.classList.remove("is-confirm");
+    nameActionBtn.title = "名前を編集";
+    nameActionIcon.innerHTML = EDIT_ICON_14;
+    nameActionBtn.onclick = showNameInput;
+  };
+  const showNameInput = () => {
+    nameInput.value = color.name || color.hex || "";
+    nameDisplay.classList.add("hidden");
+    nameInput.classList.remove("hidden");
+    nameActionBtn.classList.add("is-confirm");
+    nameActionBtn.title = "保存";
+    nameActionIcon.innerHTML = CHECK_ICON_14;
+    nameActionBtn.onclick = saveNameAndShowDisplay;
+    nameInput.focus();
+  };
+  const saveNameAndShowDisplay = () => {
+    const id = detailView.dataset.colorId;
+    if (id) updateColorName(id, nameInput.value.trim());
+    const c = appData.colors.find((x) => x.id === id);
+    nameDisplay.textContent = (c?.name || c?.hex || "").trim() || c?.hex || "";
+    setTimeout(showNameDisplay, 0);
+  };
+
+  showNameDisplay();
+  nameInput.onblur = saveNameAndShowDisplay;
+  nameInput.onkeydown = (e) => {
+    if (e.key === "Enter" && !e.isComposing) saveNameAndShowDisplay();
+    if (e.key === "Escape" && !e.isComposing) {
+      nameInput.value = color.name || color.hex || "";
+      showNameDisplay();
+    }
+  };
   hexEl.value = hexVal;
   rgbEl.value = hexToRgb(color.hex);
   hslEl.value = hexToHsl(color.hex);
   oklchEl.value = hexToOklch(color.hex);
 
+  detailView.dataset.colorId = colorId;
+  updateDetailActionButtons(colorId);
+
   mainView.classList.add("hidden");
   detailView.classList.remove("hidden");
 
   const onContentClick = (e) => {
-    const btn = e.target.closest(".color-detail-copy");
-    if (!btn) return;
-    const fmt = btn.dataset.format;
-    const text =
-      fmt === "hex" ? hexVal : fmt === "rgb" ? hexToRgb(color.hex) : fmt === "hsl" ? hexToHsl(color.hex) : hexToOklch(color.hex);
-    copyToClipboard(text);
-    const iconEl = btn.querySelector(".color-detail-copy-icon");
-    if (iconEl) {
-      if (btn._revertTimer) clearTimeout(btn._revertTimer);
-      animateIcon(iconEl, CHECK_ICON_GRAY);
-      btn._revertTimer = setTimeout(() => {
-        animateIcon(iconEl, COPY_ICON_GRAY);
-        btn._revertTimer = null;
-      }, 1600);
+    const copyBtn = e.target.closest(".color-detail-copy");
+    if (copyBtn) {
+      const fmt = copyBtn.dataset.format;
+      const text =
+        fmt === "hex" ? hexVal : fmt === "rgb" ? hexToRgb(color.hex) : fmt === "hsl" ? hexToHsl(color.hex) : hexToOklch(color.hex);
+      copyToClipboard(text);
+      const iconEl = copyBtn.querySelector(".color-detail-copy-icon");
+      if (iconEl) {
+        if (copyBtn._revertTimer) clearTimeout(copyBtn._revertTimer);
+        animateIcon(iconEl, CHECK_ICON_GRAY);
+        copyBtn._revertTimer = setTimeout(() => {
+          animateIcon(iconEl, COPY_ICON_GRAY);
+          copyBtn._revertTimer = null;
+        }, 1600);
+      }
+      return;
+    }
+    const lockBtn = e.target.closest("#detail-lock-btn");
+    if (lockBtn) {
+      toggleColorLock(colorId);
+      updateDetailActionButtons(colorId);
+      return;
+    }
+    const deleteBtn = e.target.closest("#detail-delete-btn");
+    if (deleteBtn) {
+      deleteColor(colorId);
+      hideColorDetailView();
     }
   };
 

@@ -119,7 +119,7 @@
           <input
             id="search-input"
             type="text"
-            placeholder="検索（HEX・名前）"
+            placeholder="検索"
             class="flex-1 min-w-0 h-7 px-2 rounded-lg border border-gray-200 text-xs text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#ff5c00] focus:border-[#ff5c00]"
           />
           <div class="relative shrink-0" id="color-family-wrapper">
@@ -137,8 +137,8 @@
             </div>
           </div>
         </div>
-        <div id="colors-grid-section" class="colors-grid-section">
-          <div class="flex items-center justify-between gap-2 mb-3">
+        <div id="colors-grid-section" class="colors-grid-section mb-4">
+          <div class="flex items-center justify-between gap-2 mb-2">
             <span class="text-sm font-semibold text-gray-600 uppercase">Colors</span>
             <div class="flex items-center gap-1 shrink-0">
               <button
@@ -222,13 +222,28 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           <span>戻る</span>
         </button>
+        <div class="detail-actions">
+          <button type="button" id="detail-lock-btn" class="detail-action-btn" title="ロック">
+            <span id="detail-lock-icon"></span>
+            <span id="detail-lock-label">ロック</span>
+          </button>
+          <button type="button" id="detail-delete-btn" class="detail-action-btn detail-delete-btn" title="削除">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            <span>削除</span>
+          </button>
+        </div>
       </div>
       <div class="detail-hero">
         <div id="color-detail-swatch" class="detail-swatch"></div>
-        <p id="color-detail-name" class="detail-name font-mono"></p>
+        <div class="detail-name-wrap">
+          <span id="color-detail-name-display" class="detail-name-display font-mono"></span>
+          <input type="text" id="color-detail-name" class="detail-name-input font-mono hidden" placeholder="名前を入力" />
+          <button type="button" id="detail-name-action-btn" class="detail-name-action-btn" title="名前を編集">
+            <span id="detail-name-action-icon"></span>
+          </button>
+        </div>
       </div>
       <div class="detail-formats">
-        <div class="detail-formats-label">形式</div>
         <div class="color-detail-formats">
           <div class="detail-format-row">
             <span class="detail-format-tag">HEX</span>
