@@ -113,7 +113,7 @@
 
       <!-- カラーリスト -->
       <div class="colors-list hidden">
-        <div id="folder-tabs" class="folder-tabs scroll-fade-x flex items-center gap-1 mb-2 overflow-x-auto pb-1"></div>
+        <div id="folder-tabs" class="folder-tabs flex items-center gap-1 mb-2 overflow-x-auto pb-1"></div>
         <div class="flex items-center gap-2 mb-2">
           <input
             id="search-input"
@@ -131,7 +131,7 @@
               <span id="color-family-label">色系統</span>
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div id="color-family-dropdown" class="scroll-fade-y hidden absolute top-full right-0 mt-1 z-50 min-w-[140px] py-1 rounded-lg border border-gray-200 bg-white shadow-lg max-h-[200px] overflow-y-auto">
+            <div id="color-family-dropdown" class="hidden absolute top-full right-0 mt-1 z-50 min-w-[140px] py-1 rounded-lg border border-gray-200 bg-white shadow-lg max-h-[200px] overflow-y-auto">
               <!-- 存在する色系統のみ render で動的に挿入 -->
             </div>
           </div>
@@ -146,7 +146,7 @@
               すべて削除
             </button>
           </div>
-          <div id="colors-scroll-wrap" class="scroll-fade-y overflow-y-auto max-h-[250px]">
+          <div id="colors-scroll-wrap" class="overflow-y-auto max-h-[250px]">
             <ul class="all-colors grid grid-cols-4 gap-2"></ul>
           </div>
         </div>

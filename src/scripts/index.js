@@ -580,18 +580,6 @@ const filterByFamilies = (colors, selectedId) => {
   return colors.filter((c) => colorBelongsToFamily(c, family));
 };
 
-const updateScrollFadeY = (el) => {
-  if (!el || !el.classList?.contains("scroll-fade-y")) return;
-  const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 2;
-  el.classList.toggle("at-bottom", atBottom);
-};
-
-const updateScrollFadeX = (el) => {
-  if (!el || !el.classList?.contains("scroll-fade-x")) return;
-  const atEnd = el.scrollWidth - el.scrollLeft - el.clientWidth < 2;
-  el.classList.toggle("at-end", atEnd);
-};
-
 const render = () => {
   const formatSelect = document.querySelector("#copy-format-select");
   if (formatSelect) formatSelect.value = getCopyFormat();
@@ -715,9 +703,6 @@ const render = () => {
   bindFolderTabEvents();
   bindColorFamilyOptions();
 
-  updateScrollFadeY(document.querySelector("#colors-scroll-wrap"));
-  updateScrollFadeX(document.querySelector("#folder-tabs"));
-  updateScrollFadeY(document.querySelector("#color-family-dropdown"));
 };
 
 const bindColorCardEvents = () => {
@@ -1077,11 +1062,6 @@ const initStaticListeners = () => {
   document
     .querySelector("#search-input")
     ?.addEventListener("input", () => render());
-
-  const scrollWrap = document.querySelector("#colors-scroll-wrap");
-  scrollWrap?.addEventListener("scroll", () => updateScrollFadeY(scrollWrap));
-  document.querySelector("#folder-tabs")?.addEventListener("scroll", (e) => updateScrollFadeX(e.currentTarget));
-  document.querySelector("#color-family-dropdown")?.addEventListener("scroll", (e) => updateScrollFadeY(e.currentTarget));
 
   const familyTrigger = document.querySelector("#color-family-trigger");
   const familyDropdown = document.querySelector("#color-family-dropdown");

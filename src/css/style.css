@@ -132,56 +132,6 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* 下方向スクロール時に下端をフェード（一番下ではフェードなし） */
-.scroll-fade-y {
-  --mask-offset: 24px;
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 0,
-    black calc(100% - var(--mask-offset)),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    black 0,
-    black calc(100% - var(--mask-offset)),
-    transparent 100%
-  );
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
-.scroll-fade-y.at-bottom {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-/* 横方向スクロール時に右端をフェード（一番右ではフェードなし） */
-.scroll-fade-x {
-  --mask-offset: 24px;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    black 0,
-    black calc(100% - var(--mask-offset)),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    black 0,
-    black calc(100% - var(--mask-offset)),
-    transparent 100%
-  );
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
-.scroll-fade-x.at-end {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
 /* empty: カラーチップ2行分 + α で body の min-height に合わせる */
 #empty-state {
   min-height: calc(2 * ((400px - 24px) / 4) + 8px + 100px);
