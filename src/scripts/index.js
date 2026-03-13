@@ -161,6 +161,23 @@ const EDIT_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" x
   <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 </svg>`;
 
+const TRASH_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <polyline points="3 6 5 6 21 6" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  <line x1="10" y1="11" x2="10" y2="17" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+  <line x1="14" y1="11" x2="14" y2="17" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+
+const LOCK_ICON_LG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="3" y="11" width="18" height="11" rx="2" stroke="#6b7280" stroke-width="2" fill="none"/>
+  <path d="M7 11V7a5 5 0 0110 0v4" stroke="#6b7280" stroke-width="2" stroke-linecap="round" fill="none"/>
+</svg>`;
+
+const UNLOCK_ICON_LG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="3" y="11" width="18" height="11" rx="2" stroke="#6b7280" stroke-width="2" fill="none"/>
+  <path d="M7 11V7a5 5 0 0110 0" stroke="#6b7280" stroke-width="2" stroke-linecap="round" fill="none"/>
+</svg>`;
+
 const SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 
 const showToast = () => {
@@ -518,14 +535,34 @@ const updateColorName = (colorId, name) => {
 const clearAllColors = () => {
   const folderColorList = getColorsInFolder(currentFolderId);
   const toRemove = folderColorList.filter((c) => !c.locked);
-  const fc = appData.folderColors || [];
-  toRemove.forEach((c) => {
-    const idx = fc.findIndex(
-      (f) => f.folderId === currentFolderId && f.colorId === c.id,
-    );
-    if (idx >= 0) fc.splice(idx, 1);
+  if (toRemove.length === 0) return;
+  const folder = appData.folders.find((f) => f.id === currentFolderId);
+  const folderName = folder?.name ?? "このフォルダ";
+  const msg =
+    toRemove.length === folderColorList.length
+      ? `${folderName}の${toRemove.length}色を削除しますか？`
+      : `${folderName}のロックされていない${toRemove.length}色を削除しますか？`;
+  showConfirmModal(msg, () => {
+    const fc = appData.folderColors || [];
+    toRemove.forEach((c) => {
+      const idx = fc.findIndex(
+        (f) => f.folderId === currentFolderId && f.colorId === c.id,
+      );
+      if (idx >= 0) fc.splice(idx, 1);
+    });
+    appData.folderColors = fc;
+    saveData(appData);
+    render();
   });
-  appData.folderColors = fc;
+};
+
+const toggleLockAllInFolder = () => {
+  const folderColorList = getColorsInFolder(currentFolderId);
+  if (folderColorList.length === 0) return;
+  const allLocked = folderColorList.every((c) => c.locked);
+  folderColorList.forEach((c) => {
+    c.locked = !allLocked;
+  });
   saveData(appData);
   render();
 };
@@ -604,6 +641,17 @@ const render = () => {
       .join("");
   }
   if (familyLabel) familyLabel.textContent = selectedColorFamily;
+  const lockAllBtn = document.querySelector("#lock-all-btn");
+  const lockAllIcon = document.querySelector("#lock-all-icon");
+  if (lockAllIcon && lockAllBtn) {
+    const allLocked =
+      folderColors.length > 0 && folderColors.every((c) => c.locked);
+    lockAllIcon.innerHTML = allLocked ? UNLOCK_ICON_LG : LOCK_ICON_LG;
+    lockAllBtn.title = allLocked ? "一括ロック解除" : "一括ロック";
+    lockAllBtn.disabled = folderColors.length === 0;
+  }
+  const clearBtnIcon = document.querySelector("#clear-btn-icon");
+  if (clearBtnIcon) clearBtnIcon.innerHTML = TRASH_ICON;
   const searchQuery = document.querySelector("#search-input")?.value ?? "";
   const afterText = filterByText(folderColors, searchQuery);
   const filteredColors = filterByFamilies(afterText, selectedColorFamily);
@@ -800,6 +848,38 @@ const bindColorCardEvents = () => {
       showColorContextMenu(e, card.dataset.colorId);
     });
   });
+};
+
+const showConfirmModal = (message, onConfirm) => {
+  const modal = document.getElementById("confirm-modal");
+  const messageEl = document.getElementById("confirm-modal-message");
+  const okBtn = document.getElementById("confirm-modal-ok");
+  const cancelBtn = document.getElementById("confirm-modal-cancel");
+  const overlay = modal.querySelector(".confirm-modal-overlay");
+
+  messageEl.textContent = message;
+  modal.classList.add("confirm-modal-visible");
+
+  const close = (confirmed) => {
+    modal.classList.remove("confirm-modal-visible");
+    okBtn.removeEventListener("click", onOk);
+    cancelBtn.removeEventListener("click", onCancel);
+    overlay.removeEventListener("click", onCancel);
+    document.removeEventListener("keydown", onKeydown);
+    if (confirmed) onConfirm();
+  };
+
+  const onOk = () => close(true);
+  const onCancel = () => close(false);
+  const onKeydown = (e) => {
+    if (e.key === "Enter" && !e.isComposing) onOk();
+    if (e.key === "Escape" && !e.isComposing) onCancel();
+  };
+
+  okBtn.addEventListener("click", onOk);
+  cancelBtn.addEventListener("click", onCancel);
+  overlay.addEventListener("click", onCancel);
+  document.addEventListener("keydown", onKeydown);
 };
 
 const showInputModal = (opts, onConfirm) => {
@@ -1139,7 +1219,9 @@ const activateEyeDropper = async () => {
   }
 };
 
+const lockAllBtn = document.querySelector("#lock-all-btn");
 clearBtn.addEventListener("click", clearAllColors);
+lockAllBtn?.addEventListener("click", toggleLockAllInFolder);
 pickerBtn.addEventListener("click", activateEyeDropper);
 exportBtn.addEventListener("click", exportColors);
 

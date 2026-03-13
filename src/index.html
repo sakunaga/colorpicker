@@ -114,14 +114,14 @@
       <!-- カラーリスト -->
       <div class="colors-list hidden">
         <div id="folder-tabs" class="folder-tabs flex items-center gap-1 mb-2 overflow-x-auto pb-1"></div>
-        <div class="flex items-center gap-2 mb-2">
+        <div class="mb-2 flex items-center gap-2">
           <input
             id="search-input"
             type="text"
             placeholder="検索（HEX・名前）"
-            class="flex-1 h-7 px-2 rounded-lg border border-gray-200 text-xs text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#ff5c00] focus:border-[#ff5c00]"
+            class="flex-1 min-w-0 h-7 px-2 rounded-lg border border-gray-200 text-xs text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#ff5c00] focus:border-[#ff5c00]"
           />
-          <div class="relative" id="color-family-wrapper">
+          <div class="relative shrink-0" id="color-family-wrapper">
             <button
               type="button"
               id="color-family-trigger"
@@ -137,16 +137,27 @@
           </div>
         </div>
         <div id="colors-grid-section" class="colors-grid-section">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-[10px] font-semibold text-gray-400 uppercase">Colors</span>
-            <button
-              id="clear-btn"
-              class="text-[11px] text-red-400 hover:text-red-500 font-medium transition-colors duration-150 hover:cursor-pointer"
-            >
-              すべて削除
-            </button>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="text-sm font-semibold text-gray-600 uppercase">Colors</span>
+            <div class="flex items-center gap-1 shrink-0">
+              <button
+                id="lock-all-btn"
+                type="button"
+                class="h-7 w-7 rounded flex items-center justify-center cursor-pointer shrink-0 disabled:opacity-40 disabled:cursor-not-allowed text-gray-500 hover:bg-gray-100 disabled:hover:bg-transparent"
+              >
+                <span id="lock-all-icon"></span>
+              </button>
+              <button
+                id="clear-btn"
+                type="button"
+                title="すべて削除"
+                class="h-7 w-7 rounded flex items-center justify-center cursor-pointer shrink-0 text-red-500 hover:bg-red-50"
+              >
+                <span id="clear-btn-icon"></span>
+              </button>
+            </div>
           </div>
-          <div id="colors-scroll-wrap" class="overflow-y-auto max-h-[250px]">
+          <div id="colors-scroll-wrap" class="overflow-y-auto max-h-[390px]">
             <ul class="all-colors grid grid-cols-4 gap-2"></ul>
           </div>
         </div>
@@ -199,6 +210,18 @@
         <p class="text-[11px] text-gray-300 mt-1">
           「取得」ボタンで画面からカラーを拾えます
         </p>
+      </div>
+    </div>
+
+    <!-- 確認モーダル（一括削除など） -->
+    <div id="confirm-modal" class="confirm-modal-hidden">
+      <div class="confirm-modal-overlay"></div>
+      <div class="confirm-modal-content">
+        <p id="confirm-modal-message" class="confirm-modal-message"></p>
+        <div class="confirm-modal-actions">
+          <button id="confirm-modal-cancel" class="confirm-modal-btn cancel">キャンセル</button>
+          <button id="confirm-modal-ok" class="confirm-modal-btn ok">削除</button>
+        </div>
       </div>
     </div>
 
