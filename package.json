@@ -3,8 +3,14 @@
   "version": "2.1.1",
   "main": "index.js",
   "scripts": {
-    "build": "tailwindcss -i ./src/css/input.css -o ./src/css/tailwind.css && npm run dist",
-    "watch": "tailwindcss -i ./src/css/input.css -o ./src/css/tailwind.css --watch",
+    "dev:chrome": "wxt -b chrome",
+    "dev:firefox": "wxt -b firefox",
+    "build": "conc pnpm:build:* --max-processes 1",
+    "build:chrome": "wxt build -b chrome",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "conc pnpm:zip:* --max-processes 1",
+    "zip:chrome": "wxt zip -b chrome",
+    "zip:firefox": "wxt zip -b firefox",
     "dist": "node scripts/dist.js",
     "package": "node scripts/package.js"
   },
@@ -15,14 +21,17 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/kract/colorpicker/issues"
   },
   "homepage": "https://github.com/kract/colorpicker#readme",
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",
+    "@tailwindcss/vite": "^4.3.0",
+    "concurrently": "^10.0.0",
     "tailwindcss": "^4.2.1",
-    "terser": "^5.46.0"
+    "terser": "^5.46.0",
+    "wxt": "^0.20.26"
   }
 }
